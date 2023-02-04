@@ -1,0 +1,13 @@
+title Exercise 0.6
+
+Actor User
+participant Browser
+participant Server
+
+User->Browser: *types in smtn and clicks submit*
+Browser->Server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+note right of Browser: the new note is sent to server as JSON-data 
+Server->Server: executing JS code fetched from server
+note right of Server: event handler calls method "e.preventDefault()" to prevent default handling of form submit which would cause a new GET request.
+note right of Server: "notes.push(note)" rerenders the notes list page and sends the new note to the server
+Server-->Browser: HTML-code

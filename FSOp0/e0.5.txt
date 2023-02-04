@@ -1,0 +1,26 @@
+title Exercise 0.5
+
+Actor User
+participant Browser
+participant Server
+
+User->Browser: *opens up browser*
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+Server-->Browser: HTML-code
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+Server-->Browser: main.css
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+Server-->Browser: spa.js
+
+note right of Browser: Browser executes JS code which requests JSON data from server
+
+Browser->Server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+Server-->Browser: [{"content":"Hola Hola","date":"2022-07-18T10:37:38.040Z"}...]
+
+note right of Browser: Browser then executes the event handlers which renders notes to display
+
+
+
+
+
+
