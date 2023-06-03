@@ -9,7 +9,6 @@ const getAll = () => {
   const request = axios.get(baseUrl)
   // sending then promise result
   return request.then(response => response.data)
-
 }
 
 const create = newObject => {
@@ -17,4 +16,8 @@ const create = newObject => {
   return request.then(response => response.data)
 }
 
-export default { getAll, create}
+const del = id => {
+  return axios.delete(`${baseUrl}/${id}`)
+}
+
+export default { getAll, create, del }

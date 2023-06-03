@@ -19,9 +19,13 @@ const App = () => {
         setPersons(dbPersons)
       })
   }
-  
+  // initial load
   useEffect(hook, []) // trigger effect once
+  
+  // how many persons are rendered
   console.log('render', persons.length, 'persons')
+  // type of persons that are rendered
+  console.log('all persons:', persons)
 
   const addInfo = (event) => {
     event.preventDefault()
@@ -100,6 +104,31 @@ const App = () => {
   
   const personsToShow = filteringFunction(persons)
 
+  const delPerson = ({ name, id, number }) => {
+    console.log(`are you sure you want to delete ${name} with number ${number}?`)
+    // confirmation prompt
+    if (window.confirm(`Delete ${name} ?`)) {
+      personService
+        // deleting person from backend
+        .del(id)
+        // after promise is executed, update the state
+        .then(() =>{
+          console.log(`delete button hit`)
+          console.log(`soon to update state and delete name: \"${name}\"`)
+          // find the index of the person
+          const personIndex = persons.findIndex(person => person.id === id)
+          console.log(`index of ${name} is ${personIndex}`)
+          // toSpliced returns a modified copy of the persons array. The copy contains the deleted entry of the person
+          setPersons(persons.toSpliced(personIndex, 1))
+          console.log('setPersons was called (rerender)')
+        })
+    }
+    else {
+      // do nothing
+      return
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -114,7 +143,10 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       {personsToShow.map(x => 
-        <ShowInfo key={x.name} person={x} />  
+        <ShowInfo 
+        key={x.name} 
+        person={x}
+        delPerson={() => delPerson(x)}/>  
       )}
     </div>
   )

@@ -1,9 +1,11 @@
 // Show Info component 
 
-const ShowInfo = ({ person }) => {
+const ShowInfo = ({ person, delPerson }) => {
   return(
     <>
-      {person.name} {person.number} <br></br>
+      {person.name} {person.number} 
+      {" "}<button onClick={delPerson}>{"delete"}</button>
+      <br></br>
     </>
   )
 }
