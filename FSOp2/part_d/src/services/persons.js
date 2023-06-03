@@ -20,4 +20,10 @@ const del = id => {
   return axios.delete(`${baseUrl}/${id}`)
 }
 
-export default { getAll, create, del }
+const update = (id, newObject) => {
+  console.log('this is the URL for the PUT: ', `${baseUrl}/${id}`)
+  const request = axios.put(`${baseUrl}/${id}`, newObject)
+  return request.then(response => response.data)
+}
+
+export default { getAll, create, del, update }

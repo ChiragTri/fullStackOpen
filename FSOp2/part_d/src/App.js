@@ -32,10 +32,31 @@ const App = () => {
     console.log('button clicked', event.target)
 
     // check to see if person already exists in phonebook
-    const found = persons.find(x => x.name === newInfo.name)
+    const nameMatch = x => x.name === newInfo.name
+    const found = persons.find(nameMatch)
     if (typeof(found) !== "undefined"){
-      window.alert(`${newInfo.name} is already added to phonebook`)
+      if (window.confirm(`${newInfo.name} is already added to phonebook, replace ` +
+                         `the old number with a new one?`)) {
+        console.log(`OK button was selected, changing number of ${newInfo.name}`)
+        const personIndex = persons.findIndex(nameMatch)
+        const changedPerson = persons[personIndex]
+        changedPerson.number = newInfo.number
+        personService
+          .update(persons[personIndex].id, changedPerson)
+          .then(returnedChangedPerson => {
+            // returns copy of an adjusted persons array
+            setPersons(persons.toSpliced(personIndex, 1, returnedChangedPerson))
+            console.log(`changed ${returnedChangedPerson.name}'s number to "${returnedChangedPerson.number}"`)
+          })
+      }
+      else{
+        // do nothing
+      }
     }
+    
+    // if (typeof(found) !== "undefined"){
+    //   window.alert(`${newInfo.name} is already added to phonebook`)
+    // }
     else{
       const newPerson = {
         name: newInfo.name,
