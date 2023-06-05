@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import ShowInfo from "./components/ShowInfo"
 import personService from "./services/persons"
 import Notification from "./components/Notification"
+import Error from "./components/Error"
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -10,6 +11,7 @@ const App = () => {
   })
   const [filterName, setFilterName] = useState("")
   const [personAdded, setPersonAdd] = useState(null)
+  const [errPrompt, setErrPrompt] = useState(null)
 
   const hook = () => {
     console.log('effect')
@@ -52,6 +54,19 @@ const App = () => {
             setTimeout(() => {
               setPersonAdd(null)
             }, 3000)
+          })
+          .catch(err => {
+            setErrPrompt(changedPerson)
+            // updating persons rednered by pulling from database
+            personService
+              .getAll()
+              .then(dbPersons => {
+                console.log('updating page to match DB after catching error')
+                setPersons(dbPersons)
+              })
+            setTimeout(() => {
+              setErrPrompt(null)
+            }, 5000)
           })
       }
       else{
@@ -157,6 +172,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {console.log(`in app component, this is being passed to errPrompt: ${personAdded}`)}
+      <Error person={errPrompt}/>
       {console.log(`in app component, this is personAdded: ${personAdded}`)}
       <Notification person={personAdded}/>
       <form>
