@@ -1,5 +1,6 @@
 // index.js
 
+const dedent = require('dedent')
 const express = require('express')
 const app = express()
 
@@ -32,6 +33,14 @@ app.get('/api/persons', (request, response) => {
   response.json(phonebookPersons)
 })
 
+app.get('/info', (request, response) =>{
+  const currentDate = new Date()
+  const infoSent = dedent `<p>Phonebook has info for ${phonebookPersons.length} people</p>
+                          <p>${currentDate}</p>`
+  response.send(
+    infoSent
+  )
+})
 
 const PORT = 3001
 app.listen(PORT, () => {
