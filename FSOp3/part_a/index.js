@@ -53,14 +53,39 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 
-const PORT = 3001
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
-
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   phonebookPersons = phonebookPersons.filter(person => person.id !== id)
 
   response.status(204).end()
 })
+
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+
+  if (!body.content) {
+    return response.status(400).json({ 
+      error: 'content missing' 
+    })
+  }
+
+  const person = {
+    id: Math.floor(Math.random() * 100000000),
+    name: "test",
+    number: 1234567890,
+    
+  }
+
+  phonebookPersons = phonebookPersons.concat(person)
+
+  response.json(person)
+})
+
+
+const PORT = 3001
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`)
+})
+
+
